@@ -32,6 +32,7 @@
       emptyGuess: 'Digite o nome de um álbum ou artista',
       notFound: 'Álbum não encontrado no acervo',
       skipped: 'Tentativa pulada',
+      noPeeking: 'Esse dia ainda não chegou — este é o álbum de hoje',
       resetGame: 'Partida de hoje reiniciada',
       resetAll: 'Partidas e estatísticas apagadas',
       copied: 'Resultado copiado!',
@@ -148,6 +149,7 @@
       emptyGuess: 'Type an album or artist name',
       notFound: 'Album not in the pool',
       skipped: 'Skipped',
+      noPeeking: "That day is not out yet — here is today's album",
       resetGame: 'Game reset',
       resetAll: 'Games and stats cleared',
       copied: 'Result copied!',
@@ -274,6 +276,7 @@
     'R&B alternativo': 'Alternative R&B',
     'Samba experimental': 'Experimental samba',
     'Vanguarda paulista': 'São Paulo avant-garde',
+    'Pop infantil': "Children's pop",
     'Samba rock': 'Samba rock',
     'Sertanejo romântico': 'Romantic sertanejo',
     'Metal progressivo': 'Progressive metal',
@@ -313,8 +316,9 @@
   };
 
   var MODES = {
-    tudo: { pt: 'Nacional e internacional', en: 'Brazilian & international' },
-    intl: { pt: 'Só internacional', en: 'International only' }
+    intl: { pt: 'Só internacional', en: 'International only' },
+    nacional: { pt: 'Só nacional', en: 'Brazilian only' },
+    tudo: { pt: 'Nacional e internacional', en: 'Brazilian & international' }
   };
 
   var current = 'pt';

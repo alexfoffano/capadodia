@@ -10,8 +10,10 @@
 (function (root) {
   'use strict';
 
+  /* A ordem daqui é a ordem do menu da engrenagem. */
   var MODES = {
     intl: { filter: function (a) { return a.country !== 'Brasil'; }, seed: 0x1A7E51 },
+    nacional: { filter: function (a) { return a.country === 'Brasil'; }, seed: 0x2B3A19 },
     tudo: { filter: function () { return true; }, seed: 0x5EED1A }
   };
 

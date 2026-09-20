@@ -127,18 +127,37 @@
   var hoje = hojeNumero();
 
   /* ?dia=N abre um dia do arquivo — é assim que o calendário leva a pessoa
-     para uma partida antiga. Acima de hoje o parâmetro continua servindo para
-     conferir uma capa que ainda vai entrar, mas aí nada é salvo nem contado. */
+     para uma partida antiga. Só para trás: pedir um dia que ainda não chegou
+     cai no dia de hoje, porque senão bastaria somar 1 na URL para ver a capa
+     de amanhã antes de todo mundo. */
+  var espiada = false;
+
   var day = (function () {
     var m = location.search.match(/[?&]dia=(\d+)/);
-    var n = m ? parseInt(m[1], 10) : hoje;
-    return n >= 1 ? n : hoje;
+    if (!m) return hoje;
+    var n = parseInt(m[1], 10);
+    if (!(n >= 1)) return hoje;
+    if (n > hoje) { espiada = true; return hoje; }
+    return n;
   })();
-  var futuro = day > hoje;
   var arquivo = day !== hoje;
 
+  /* Com o dia recusado, o ?dia= sai da URL: deixá-lo ali faria o F5 repetir o
+     aviso e o endereço mentir sobre qual partida está aberta. */
+  if (espiada) limparParametro('dia');
+
+  function limparParametro(nome) {
+    try {
+      var resto = location.search.replace(/^\?/, '').split('&').filter(function (par) {
+        return par && par.split('=')[0] !== nome;
+      });
+      history.replaceState(null, '', location.pathname +
+        (resto.length ? '?' + resto.join('&') : '') + location.hash);
+    } catch (e) { /* file:// pode recusar; o jogo segue igual */ }
+  }
+
   /* ?reset apaga a partida aberta desta versão; ?reset=tudo apaga o arquivo
-     inteiro das duas versões. Serve para testar à vontade. O parâmetro sai
+     inteiro de todas as versões. Serve para testar à vontade. O parâmetro sai
      da URL em seguida — assim um F5 não apaga a partida que você acabou de começar. */
   var resetMsg = (function () {
     var m = location.search.match(/[?&]reset(?:=([a-z]+))?(?=&|$)/i);
@@ -449,7 +468,6 @@
   }
 
   function save() {
-    if (futuro) return;     // espiar um dia que ainda não chegou não deixa rastro
     jogos[day] = state;
     modeStore('jogos', jogos);
   }
@@ -909,7 +927,7 @@
     if (mode !== CONFIG.defaultMode) params.push('v=' + mode);
     /* num dia do arquivo o link tem de levar àquele dia, senão quem clicar cai
        no álbum de hoje e a grade de emojis não bate com nada */
-    if (arquivo && !futuro) params.push('dia=' + day);
+    if (arquivo) params.push('dia=' + day);
     if (!params.length) return base;
     return base + (base.indexOf('?') === -1 ? '?' : '&') + params.join('&');
   }
@@ -1225,7 +1243,8 @@
     setupSwitchers();
     renderArchiveBar();
 
-    if (resetMsg) toast(t(resetMsg));
+    if (espiada) toast(t('noPeeking'));
+    else if (resetMsg) toast(t(resetMsg));
 
     if (!ALBUMS.length) {
       stageLabel.textContent = t('noAlbums');

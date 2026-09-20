@@ -98,6 +98,20 @@ function reconciliar(cal) {
     const ids = new Set(acervo.map(a => a.id));
     const naLista = new Set(lista);
 
+    /* Versão recém-criada: não existe passado para proteger, então ela nasce do
+       embaralhamento inteiro. Sem isto ela cairia no caminho de baixo, que só
+       encaixa álbum em dia futuro — e, com o calendário vazio, "futuro" é tudo:
+       os álbuns entrariam enfileirados na ordem do JSON, e a versão jogaria
+       toda a bossa nova numa semana e todo o sertanejo em outra. */
+    if (!lista.length) {
+      cal[modo] = ordemPorSemente(modo);
+      relatorio.push({
+        modo, entraram: [], sairam: [], presos: [],
+        total: cal[modo].length, nova: true
+      });
+      continue;
+    }
+
     const novos = acervo.filter(a => !naLista.has(a.id)).map(a => a.id);
     const sumidos = lista.filter((id, i) => !ids.has(id) && i >= congelado);
     const sumidosNoPassado = lista.filter((id, i) => !ids.has(id) && i < congelado);
@@ -143,6 +157,7 @@ if (init || !existsSync(calendarPath)) {
     `(margem de ${MARGEM}).\n`);
   for (const r of relatorio) {
     console.log(`${r.modo}: ${r.total} álbuns no calendário`);
+    if (r.nova) { console.log(`  versão nova — calendário criado, dia 1 = ${cal[r.modo][0]}`); continue; }
     if (r.entraram.length) console.log(`  entraram (em dias futuros): ${r.entraram.join(', ')}`);
     if (r.sairam.length) console.log(`  saíram do futuro: ${r.sairam.join(', ')}`);
     if (r.presos.length) {

@@ -61,13 +61,18 @@ tools/cover-candidates.mjs  lista e troca capas alternativas de um álbum
 
 ## Versões e idiomas
 
-O jogo tem duas versões, escolhidas na **engrenagem** do cabeçalho (o **globo**, ao lado,
+O jogo tem três versões, escolhidas na **engrenagem** do cabeçalho (o **globo**, ao lado,
 troca o idioma):
 
 | Versão | Acervo | |
 |---|---|---|
-| **Só internacional** | exclui os álbuns brasileiros | padrão |
-| **Nacional e internacional** | tudo | |
+| **Só internacional** | exclui os álbuns brasileiros | 453 · padrão |
+| **Só nacional** | só os brasileiros | 126 |
+| **Nacional e internacional** | tudo | 579 |
+
+O acervo da versão nacional é bem menor, então ela **repete** depois de 126 dias, enquanto
+as outras passam de um ano sem repetir. Nela a coluna **País** também fica sempre verde,
+porque todo álbum é brasileiro — é uma coluna a menos de informação por palpite.
 
 Quem chega pela primeira vez cai na versão padrão (`CONFIG.defaultMode`, em
 `js/game.js`); depois disso vale a última versão escolhida, que fica salva.
@@ -107,14 +112,16 @@ Parâmetros de URL que ajudam a jogar várias vezes sem esperar o dia virar:
 | --- | --- |
 | `?dia=42` | joga o álbum do dia 42 em vez do de hoje |
 | `?reset` | apaga a partida do dia aberto, **desta** versão, e começa de novo |
-| `?reset=tudo` | apaga o arquivo inteiro das duas versões |
+| `?reset=tudo` | apaga o arquivo inteiro de todas as versões |
 
 Dá para combinar: `?dia=42&reset` reinicia o dia 42. O `reset` sai da URL depois de
 rodar — um F5 não apaga de novo a partida que você acabou de começar.
 
-`?dia=N` acima do dia de hoje continua servindo para conferir uma capa que ainda vai
-entrar. Essa partida é **descartável**: não é salva nem entra na estatística, para espiar
-o futuro não sujar o arquivo.
+`?dia=N` **só anda para trás**. Pedir um dia que ainda não chegou cai no álbum de hoje,
+com um aviso, e o parâmetro sai da URL — senão bastaria somar 1 no endereço para ver a
+capa de amanhã antes de todo mundo, e o jogo diário perderia a graça. Para conferir a capa
+de um álbum que ainda vai entrar, abra o arquivo em `assets/covers/` ou use
+`node tools/cover-candidates.mjs <id>`.
 
 ## Jogos anteriores
 
@@ -204,7 +211,7 @@ exige um User-Agent identificável.
 à mão como `assets/covers/<id>.jpg`. Enquanto a capa não existe, o jogo desenha um gradiente
 colorido no lugar, para não quebrar.
 
-Hoje os 576 álbuns têm capa, todos no sorteio.
+Hoje os 579 álbuns têm capa, todos no sorteio.
 
 ## Conferindo se a capa é a certa
 
@@ -282,8 +289,8 @@ sem artigo, no buscador da Wikipédia; sem resumo em português, mostra o em ing
 resumo nenhum, o texto simplesmente não aparece e entra um terceiro botão com o link do
 verbete.
 
-Hoje, dos 576 álbuns: **565** com artigo, **561** com resumo (508 em português, 538 em
-inglês) e **406** com link direto no Spotify. Os 11 sem artigo são discos de samba e forró
+Hoje, dos 579 álbuns: **568** com artigo, **564** com resumo (511 em português, 541 em
+inglês) e **407** com link direto no Spotify. Os 11 sem artigo são discos de samba e forró
 dos anos 60-70 que a Wikipédia em português não cobre.
 
 O resumo é texto de terceiro, então carrega os erros do verbete: em três casos a data que
@@ -333,6 +340,7 @@ seguinte ao daqui. Ajuste com `--margem 7`, veja o que aconteceria com `--check`
 
 | Situação | O que o script faz |
 |---|---|
+| versão nova, sem calendário | nasce do embaralhamento inteiro — não há passado a proteger |
 | álbum novo no acervo | entra num dia futuro sorteado |
 | álbum removido, dia ainda não chegou | sai do calendário, sem ruído |
 | álbum removido, dia já passou | avisa e **mantém o dia**; reescrevê-lo seria mentir sobre o que as pessoas jogaram |

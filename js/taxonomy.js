@@ -48,6 +48,7 @@
     ['Soul', 'Neo soul', 'R&B contemporâneo', 'R&B alternativo', 'Pop soul'],
     ['Funk', 'Funk psicodélico', 'Funk rock', 'Funk carioca'],
     ['Pop dance', 'Dance-pop', 'Disco', 'Eletropop', 'Synth-pop', 'Europop', 'Art pop'],
+    ['Pop infantil', 'Pop dance', 'Dance-pop', 'Axé', 'Pop rock'],
     ['House', 'Ambient', 'Downtempo', 'Trip hop', 'Big beat', 'Eletropop'],
     ['Jazz modal', 'Hard bop', 'Cool jazz', 'Free jazz', 'Jazz espiritual', 'Jazz fusion', 'Jazz pop'],
     ['Jazz vocal', 'Jazz pop', 'Cool jazz', 'Soul'],

@@ -6687,6 +6687,30 @@
       "pt": "Clara Crocodilo é o primeiro álbum do compositor brasileiro Arrigo Barnabé, acompanhado da banda Sabor de Veneno e lançado em 1980."
     }
   },
+  "4-non-blondes-bigger-better-faster-more": {
+    "wikidata": "Q1794881",
+    "spotify": "7oqXnxR9Xg9Okhs17hL9aS",
+    "wiki": {
+      "pt": "Bigger, Better, Faster, More!",
+      "en": "Bigger, Better, Faster, More!"
+    },
+    "blurb": {
+      "pt": "Bigger, Better, Faster, More! é o único álbum de estúdio produzido pela banda de rock alternativo 4 Non Blondes, publicado em 1992.",
+      "en": "Bigger, Better, Faster, More! is the only studio album by American rock band 4 Non Blondes, released on October 13, 1992."
+    }
+  },
+  "joan-jett-bad-reputation": {
+    "wikidata": "Q745962",
+    "spotify": null,
+    "wiki": {
+      "pt": "Bad Reputation",
+      "en": "Bad Reputation (Joan Jett album)"
+    },
+    "blurb": {
+      "pt": "Bad Reputation é o álbum de estreia da cantora Joan Jett, lançado em 23 de Janeiro de 1981. Originalmente auto-lançado em 1980, com o nome de Joan Jett, em seguida, relançado pela Boardwalk em 1981, como Bad Reputation.",
+      "en": "Bad Reputation is the debut solo studio album by American rock singer Joan Jett. It was originally released independently on May 17, 1980 as an eponymous album after her previous band the Runaways had disbanded the previous year."
+    }
+  },
   "paulinho-da-viola-1971": {
     "wikidata": null
   },
@@ -6719,5 +6743,17 @@
   },
   "alceu-valenca-coracao-bobo": {
     "wikidata": null
+  },
+  "xuxa-xou-da-xuxa": {
+    "wikidata": "Q10394407",
+    "spotify": null,
+    "wiki": {
+      "pt": "Xou da Xuxa (álbum)",
+      "en": "Xou da Xuxa (album)"
+    },
+    "blurb": {
+      "pt": "Xou da Xuxa é o segundo álbum de estúdio da artista musical e apresentadora brasileira Xuxa. O seu lançamento ocorreu em 6 de agosto de 1986 pela gravadora Som Livre.",
+      "en": "Xou da Xuxa (English: Xuxa's Show) is the second studio album by Brazilian recording artist Xuxa. It was released on 6 August 1986 by Som Livre, alongside her television show on Globo."
+    }
   }
 }
