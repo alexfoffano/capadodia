@@ -432,3 +432,16 @@ prática é a diferença entre receber um e-mail e receber uma notificação.
 Pelo mesmo motivo, evite escrever *fair use* no aviso: é doutrina americana e a lei
 brasileira (9.610/98) não tem equivalente genérico — invocá-la errado fica pior do que não
 invocar nada.
+
+## Licença
+
+O código, as ferramentas, a seleção dos álbuns e a taxonomia de gêneros são **MIT** — ver
+[LICENSE](LICENSE).
+
+O MIT **não cobre as capas** em `assets/covers/`, que são de seus respectivos autores,
+artistas e gravadoras e não são licenciadas por este projeto, nem os resumos em
+`data/extras.json`, que são trechos da Wikipédia sob CC BY-SA 4.0. Quem clonar o
+repositório responde pelo uso que fizer das imagens.
+
+O detalhamento está em [NOTICE.md](NOTICE.md) — é ele que define o que o LICENSE chama de
+"o Software".
