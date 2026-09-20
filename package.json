@@ -1,0 +1,14 @@
+{
+  "name": "capa-do-dia",
+  "version": "1.0.0",
+  "description": "Jogo diario de adivinhar albuns pela capa distorcida",
+  "private": true,
+  "scripts": {
+    "start": "npx --yes serve -l 4173 .",
+    "build": "node tools/build.mjs",
+    "covers": "node tools/fetch-covers.mjs",
+    "extras": "node tools/fetch-extras.mjs",
+    "verify": "node tools/verify-releases.mjs",
+    "calendar": "node tools/calendar.mjs"
+  }
+}

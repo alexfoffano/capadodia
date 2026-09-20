@@ -1,0 +1,7 @@
+# Guarda tudo com LF no repositório, mesmo editando no Windows: sem isso o
+# primeiro commit feito noutra máquina aparece como "arquivo inteiro mudou".
+* text=auto eol=lf
+
+# as capas são binário e não passam por conversão de fim de linha
+*.jpg -text
+*.png -text

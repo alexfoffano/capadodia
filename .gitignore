@@ -1,0 +1,6 @@
+node_modules/
+.DS_Store
+Thumbs.db
+
+# candidatos de capa baixados pelo tools/cover-candidates.mjs (dezenas de MB)
+.candidatos/
