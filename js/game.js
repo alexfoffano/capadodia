@@ -32,12 +32,12 @@
 
   /* Quanto a capa é revelada a cada erro. index = nº de erros já cometidos. */
   var STAGES = [
-    { blocks: 3,  blur: 11, crop: 0.26 },
-    { blocks: 5,  blur: 8,  crop: 0.40 },
-    { blocks: 8,  blur: 5,  crop: 0.56 },
-    { blocks: 14, blur: 3,  crop: 0.74 },
-    { blocks: 26, blur: 1.6, crop: 0.90 },
-    { blocks: 48, blur: 0.8, crop: 1.00 }
+    { blocks: 4,  blur: 0, crop: 1.00 },
+    { blocks: 6,  blur: 0, crop: 1.00 },
+    { blocks: 9,  blur: 0, crop: 1.00 },
+    { blocks: 14, blur: 0, crop: 1.00 },
+    { blocks: 26, blur: 0, crop: 1.00 },
+    { blocks: 48, blur: 0, crop: 1.00 }
   ];
 
   /* ------------------------------------------------------------------ utils */
