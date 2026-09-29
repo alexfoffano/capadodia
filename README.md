@@ -307,11 +307,23 @@ de busca, sem código de afiliado.
 ## Ajustando a dificuldade
 
 - **Quantas tentativas**: `CONFIG.maxGuesses` em `js/game.js`.
-- **Quanto a capa revela por erro**: o array `STAGES` em `js/game.js` (`blocks` = tamanho
-  do pixel, `blur` = desfoque, `crop` = fração da capa visível).
-- **Onde o recorte começa**: por padrão cai em um ponto qualquer da capa (estável por
-  álbum) — inclusive numa área toda preta, que também é pista. `CONFIG.smartCrop = true`
-  faz o recorte abrir pela região de maior contraste da imagem.
+- **Quanto a capa revela por erro**: o array `STAGES` em `js/game.js`. Ele tem três
+  efeitos independentes, e **este projeto usa só o primeiro**:
+
+  | | | |
+  |---|---|---|
+  | `blocks` | blocos de cor por lado — a pixelação | **em uso**: 4×4 na primeira tentativa, 48×48 na última |
+  | `blur` | desfoque em pixels, por cima da pixelação | desligado (`0`) |
+  | `crop` | fração da capa visível, de 0 a 1 | desligado (sempre `1.00`) |
+
+  Os três somados escondiam mais do que ajudavam a deduzir: o desfoque apagava a
+  fronteira entre os blocos, e o recorte tirava justamente a composição da capa, que é a
+  melhor pista. Para dificultar, mexa primeiro no `blocks` do primeiro estágio.
+
+- **Onde o recorte começa**: `CONFIG.smartCrop` — `false` faz o recorte cair num ponto
+  qualquer da capa (estável por álbum), `true` o faz abrir pela região de maior contraste.
+  **Desligado, e sem efeito enquanto o `crop` for 1.00 em todos os estágios**, porque aí
+  não existe recorte para posicionar. Só volta a valer se você reativar o `crop`.
 - **O que conta como amarelo**: `js/taxonomy.js` — vizinhança de gêneros, famílias de
   subgênero e a tolerância de anos (`YEAR_NEAR`).
 - **Qual álbum cai em cada dia**: sai de `data/calendar.json`, contado a partir de
@@ -363,7 +375,7 @@ O botão monta um texto sem entregar o álbum — só os quadradinhos, na mesma 
 colunas:
 
 ```
-Capa do Dia nº 3 — Eu acertei por pouco! (6/6)
+Capa do Dia nº 3 · Internacional — Eu acertei por pouco! (6/6)
 
 🟥🟥🟥🟥🟥🟥🟥
 🟨🟨🟥🟩🟩🟥🟥
@@ -372,8 +384,14 @@ Capa do Dia nº 3 — Eu acertei por pouco! (6/6)
 🟨🟥🟥🟥🟩🟨🟥
 🟩🟩🟩🟩🟩🟩🟩
 
-https://seu-site/
+https://seu-site/?v=intl
 ```
+
+A **versão** entra na primeira linha e no link. Sem ela, dois resultados do mesmo dia
+parecem discordar um do outro, porque o nº 3 é um álbum diferente em cada versão. Os nomes
+curtos usados aqui (Internacional, Nacional, Nacional + internacional) saem do campo
+`share` em `MODES`, dentro de `js/i18n.js`: no menu as três aparecem juntas e o "Só" as
+distingue, mas solto no meio de uma frase "Só nacional" soa como desculpa.
 
 A frase muda com o desempenho (de primeira, rápido, quase escapou, por pouco, não
 consegui) e está em `shareHead`, em `js/i18n.js`, nos dois idiomas. Tentativa pulada vira
@@ -382,10 +400,13 @@ uma linha de ⬛.
 O link do fim sai de **`CONFIG.shareUrl`** em `js/game.js`. Deixando vazio, usa o endereço
 da página aberta (sem os parâmetros de teste), o que já resolve depois de publicar;
 abrindo o `index.html` do disco, a linha não aparece, porque não existe link que sirva
-para outra pessoa. Quando a versão não é a padrão, o `?v=` entra junto — o nº 3 de uma
-versão é outro álbum na outra, e quem abrir o link precisa cair no mesmo jogo. Pelo mesmo
-motivo, o resultado de um dia do arquivo leva o `?dia=` junto: sem ele quem clicasse cairia
-no álbum de hoje e a grade de emojis não bateria com nada.
+para outra pessoa.
+
+O `?v=` vai **sempre**, inclusive quando a versão é a padrão. Omiti-lo não deixa o link
+neutro: quem abre cai na versão que ele mesmo jogou por último, que fica salva e vence o
+padrão — então um resultado internacional aberto por quem joga a nacional mostrava outro
+álbum. Pelo mesmo motivo, o resultado de um dia do arquivo leva o `?dia=` junto: sem ele
+quem clicasse cairia no álbum de hoje.
 
 O botão fica no fim da tela de resultado (“Compartilhar resultado”) e, com a partida do
 dia encerrada, também no painel de estatísticas — lá ele se chama “Compartilhar resultado

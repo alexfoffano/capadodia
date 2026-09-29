@@ -24,13 +24,27 @@
        painel de ajuda; é o canal que faz o aviso de direitos valer alguma
        coisa, então não deve ficar vazio num jogo publicado. */
     contactEmail: 'apoiocapadodia@gmail.com',
-    /* false: o recorte inicial cai em qualquer lugar da capa — inclusive numa
-       área toda preta, que também é dica. true: procura a região de maior
-       contraste da imagem. */
+    /* Escolhe ONDE o recorte da capa começa: false cai num ponto qualquer
+       (estável por álbum), true procura a região de maior contraste.
+       DESLIGADO neste projeto — e sem efeito enquanto estiver assim, porque
+       o STAGES abaixo usa crop 1.00 do começo ao fim e não existe recorte
+       para posicionar. Só volta a valer se algum estágio tiver crop < 1. */
     smartCrop: false
   };
 
-  /* Quanto a capa é revelada a cada erro. index = nº de erros já cometidos. */
+  /* Quanto a capa é revelada a cada erro. index = nº de erros já cometidos.
+     São três efeitos independentes, e este projeto usa só o primeiro:
+
+       blocks — quantos blocos de cor por lado. É a pixelação, e é o único
+                efeito em uso: 4x4 na primeira tentativa, 48x48 na última.
+       blur   — desfoque em pixels, por cima da pixelação. DESLIGADO (0).
+       crop   — fração da capa visível, de 0 a 1; abaixo de 1 mostra só um
+                pedaço, que cresce a cada erro. DESLIGADO (sempre 1.00).
+
+     Os três somados escondiam mais do que ajudavam a deduzir: o desfoque
+     apagava a fronteira entre os blocos, e o recorte tirava justamente a
+     composição da capa, que é a melhor pista. Quem quiser dificultar, mexa
+     primeiro no `blocks` do primeiro estágio. */
   var STAGES = [
     { blocks: 4,  blur: 0, crop: 1.00 },
     { blocks: 6,  blur: 0, crop: 1.00 },
@@ -923,12 +937,15 @@
       if (location.protocol !== 'http:' && location.protocol !== 'https:') return '';
       base = location.origin + location.pathname;
     }
-    var params = [];
-    if (mode !== CONFIG.defaultMode) params.push('v=' + mode);
+    /* A versão vai SEMPRE, inclusive quando é a padrão. Omiti-la não deixa o
+       link neutro: quem abre cai na versão que ele mesmo jogou por último, que
+       fica salva e vence o padrão. Um resultado internacional aberto por quem
+       joga a nacional mostrava outro álbum, e a grade de emojis não batia com
+       coisa nenhuma. */
+    var params = ['v=' + mode];
     /* num dia do arquivo o link tem de levar àquele dia, senão quem clicar cai
        no álbum de hoje e a grade de emojis não bate com nada */
     if (arquivo) params.push('dia=' + day);
-    if (!params.length) return base;
     return base + (base.indexOf('?') === -1 ? '?' : '&') + params.join('&');
   }
 
@@ -943,7 +960,8 @@
     }).filter(Boolean).join('\n');
 
     var partes = [
-      t('shareHead')(day, state.guesses.length, state.won, CONFIG.maxGuesses),
+      t('shareHead')(day, state.guesses.length, state.won, CONFIG.maxGuesses,
+        I18n.modeShare(mode)),
       '',
       grid
     ];

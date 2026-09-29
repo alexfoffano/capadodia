@@ -99,15 +99,17 @@
       share: 'Compartilhar resultado',
       shareToday: 'Compartilhar resultado do dia',
       seeResult: 'Ver o resultado do dia',
-      /* primeira linha do texto compartilhado */
-      shareHead: function (dia, tentativas, ganhou, total) {
+      /* Primeira linha do texto compartilhado. A versão entra aqui porque o
+         mesmo nº 23 é um álbum diferente em cada uma: sem dizer qual, dois
+         resultados do mesmo dia parecem discordar um do outro. */
+      shareHead: function (dia, tentativas, ganhou, total, versao) {
         var frase = !ganhou ? 'Eu não consegui hoje!'
           : tentativas === 1 ? 'Eu acertei de primeira!'
           : tentativas === 2 ? 'Eu acertei rápido!'
           : tentativas === total ? 'Eu acertei por pouco!'
           : tentativas === total - 1 ? 'Essa quase escapou!'
           : 'Eu acertei!';
-        return 'Capa do Dia nº ' + dia + ' — ' + frase +
+        return 'Capa do Dia nº ' + dia + ' · ' + versao + ' — ' + frase +
           ' (' + (ganhou ? tentativas : 'X') + '/' + total + ')';
       },
       listen: 'Ouvir no Spotify',
@@ -215,14 +217,14 @@
       share: 'Share result',
       shareToday: "Share today's result",
       seeResult: "See today's result",
-      shareHead: function (day, tries, won, total) {
+      shareHead: function (day, tries, won, total, edition) {
         var frase = !won ? 'I could not get it today!'
           : tries === 1 ? 'I got it on the first try!'
           : tries === 2 ? 'I got it fast!'
           : tries === total ? 'I got it by a hair!'
           : tries === total - 1 ? 'That was a close one!'
           : 'I got it!';
-        return 'Cover of the Day #' + day + ' — ' + frase +
+        return 'Cover of the Day #' + day + ' · ' + edition + ' — ' + frase +
           ' (' + (won ? tries : 'X') + '/' + total + ')';
       },
       listen: 'Listen on Spotify',
@@ -315,10 +317,16 @@
     'Independente': 'Independent'
   };
 
+  /* `pt`/`en` nomeiam a versão no menu, onde as três aparecem juntas e o "Só"
+     as distingue. `share` é o nome solto, no meio de uma frase compartilhada,
+     onde não há com o que comparar — ali "Só nacional" soa como desculpa. */
   var MODES = {
-    intl: { pt: 'Só internacional', en: 'International only' },
-    nacional: { pt: 'Só nacional', en: 'Brazilian only' },
-    tudo: { pt: 'Nacional e internacional', en: 'Brazilian & international' }
+    intl: { pt: 'Só internacional', en: 'International only',
+      share: { pt: 'Internacional', en: 'International' } },
+    nacional: { pt: 'Só nacional', en: 'Brazilian only',
+      share: { pt: 'Nacional', en: 'Brazilian' } },
+    tudo: { pt: 'Nacional e internacional', en: 'Brazilian & international',
+      share: { pt: 'Nacional + internacional', en: 'Brazilian + international' } }
   };
 
   var current = 'pt';
@@ -338,6 +346,10 @@
     t: function (key) { return UI[current][key]; },
     column: function (key) { return UI[current].columns[key]; },
     mode: function (id) { return (MODES[id] || {})[current] || id; },
+    modeShare: function (id) {
+      var m = MODES[id] || {};
+      return (m.share || {})[current] || m[current] || id;
+    },
 
     /* traduz um valor de dado; o que não está no dicionário passa igual */
     value: function (text) {
