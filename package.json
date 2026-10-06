@@ -9,6 +9,9 @@
     "covers": "node tools/fetch-covers.mjs",
     "extras": "node tools/fetch-extras.mjs",
     "verify": "node tools/verify-releases.mjs",
-    "calendar": "node tools/calendar.mjs"
+    "calendar": "node tools/calendar.mjs",
+    "games:build": "node games/tools/build.mjs",
+    "games:covers": "node games/tools/fetch-covers.mjs",
+    "icons": "node tools/make-icons.mjs"
   }
 }

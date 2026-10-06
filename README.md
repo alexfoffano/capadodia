@@ -44,6 +44,9 @@ js/modes.js         as versões do jogo (usado pelo navegador e pelas ferramenta
 js/i18n.js          textos da interface e tradução dos valores das colunas
 js/taxonomy.js      regras de proximidade — o que é "amarelo"
 js/game.js          motor do jogo, canvas da capa, arquivo de partidas, estatísticas
+js/pwa.js           service worker e o convite para instalar como app
+sw.js               cache offline (casca e capas)
+manifest.webmanifest  nome, cores e ícones do app instalado
 data/albums.json    a base editável (fonte da verdade)
 data/albums.js      gerado a partir do JSON; é o que o navegador carrega
 data/calendar.json  a ordem dos dias de cada versão (congelada)
@@ -57,6 +60,7 @@ tools/verify-releases.mjs  confere se as capas são da edição original
 tools/fetch-extras.mjs  busca resumo, artigo e Spotify (MusicBrainz + Wikidata)
 tools/calendar.mjs  mantém a ordem dos dias sem mexer no passado
 tools/cover-candidates.mjs  lista e troca capas alternativas de um álbum
+tools/make-icons.mjs  gera os ícones do app (PWA, favicon, iOS)
 ```
 
 ## Versões e idiomas
@@ -461,6 +465,61 @@ prática é a diferença entre receber um e-mail e receber uma notificação.
 Pelo mesmo motivo, evite escrever *fair use* no aviso: é doutrina americana e a lei
 brasileira (9.610/98) não tem equivalente genérico — invocá-la errado fica pior do que não
 invocar nada.
+
+## Instalando como app
+
+O jogo é um **PWA**: dá para instalar na tela inicial do celular e abrir sem barra de
+endereço, como um aplicativo. São três peças:
+
+| | |
+|---|---|
+| `manifest.webmanifest` | nome, cores, orientação e ícones |
+| `sw.js` | service worker: o cache que faz abrir sem internet |
+| `js/pwa.js` | registra o service worker e oferece a instalação |
+
+### Os ícones
+
+```bash
+node tools/make-icons.mjs
+```
+
+O desenho é a própria mecânica do jogo — uma capa pixelada em 4×4 blocos, que é o que a
+pessoa vê na primeira tentativa — nas cores do tema. O script escreve o PNG na unha, com
+`zlib`, para o projeto não ganhar uma dependência só por causa de cinco imagens de
+retângulo chapado.
+
+Saem cinco arquivos, e o `icon-maskable-512.png` é o que costuma passar despercebido: o
+Android recorta o ícone em círculo, losango ou squircle conforme o aparelho, e só os 80%
+centrais são zona segura. Por isso ele tem a grade menor que os outros — sem essa versão,
+os cantos do desenho seriam cortados.
+
+### O cache
+
+O service worker trata os dois tipos de arquivo de formas diferentes, porque eles
+envelhecem de jeitos diferentes:
+
+| | | |
+|---|---|---|
+| casca | `index.html`, `css/`, `js/`, `data/*.js` | **rede primeiro**, cache como reserva |
+| capas | `assets/covers/*.jpg` | **cache primeiro** |
+
+A casca precisa de rede primeiro porque o acervo cresce: servir um `data/albums.js` velho
+faria o jogo comparar o palpite com outro álbum, ou procurar uma capa que o calendário
+novo nem usa mais. Já uma capa, uma vez baixada, nunca muda — o nome do arquivo é o id do
+álbum. **As 579 capas não são pré-carregadas**: são 47 MB, e ninguém quer isso no primeiro
+acesso. Cada uma entra no cache quando aparece numa partida, então os dias que você já
+jogou continuam abrindo sem internet.
+
+Mexendo no `sw.js`, **troque o `VERSAO`**. É ele que faz o `activate` descartar o cache
+antigo; sem a troca, quem já visitou continuaria com os arquivos velhos.
+
+### iOS
+
+O Safari ignora boa parte do manifest, então as `<meta>` de `apple-` no `index.html` não
+são redundância: é de lá que saem a tela cheia, o nome do atalho e o estilo da barra de
+status. E o iPhone não tem o evento `beforeinstallprompt` — lá a instalação é um item do
+menu de compartilhar, então o `js/pwa.js` mostra o caminho em texto em vez de um botão que
+não funcionaria.
 
 ## Licença
 

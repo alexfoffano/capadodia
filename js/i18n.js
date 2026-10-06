@@ -115,6 +115,9 @@
       listen: 'Ouvir no Spotify',
       buy: 'Comprar na Amazon',
       readMore: 'Leia mais na Wikipédia',
+      install: 'Instalar como app ↓',
+      installIOS: ' — toque em Compartilhar e depois em "Adicionar à Tela de Início".',
+      installOutro: ' — no menu do navegador, procure "Instalar app" ou "Adicionar à tela inicial".',
       nextIn: 'Próximo álbum em',
       noAlbums: 'Nenhum álbum carregado — rode "node tools/build.mjs".',
 
@@ -230,6 +233,9 @@
       listen: 'Listen on Spotify',
       buy: 'Buy on Amazon',
       readMore: 'Read more on Wikipedia',
+      install: 'Install as an app ↓',
+      installIOS: ' — tap Share, then "Add to Home Screen".',
+      installOutro: ' — in the browser menu, look for "Install app" or "Add to home screen".',
       nextIn: 'Next album in',
       noAlbums: 'No albums loaded — run "node tools/build.mjs".',
 
